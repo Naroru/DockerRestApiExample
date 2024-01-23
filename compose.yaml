@@ -1,6 +1,19 @@
 version: "3.5"
 services:
-  postgres:
+  java_app:
+    container_name: java_app
+    image: rest_api_docker_example:latest
+    build: .                              #билдим образ. Как вариант можно залить сбилденный образ на докерхаб и тут билд не делать
+    ports:                                # а брать image: адрес_докерхаба
+      - "8080:8080"
+    environment:
+      - DATABASE_URL=jdbc:postgresql://java_db:5432/mydb
+      - DATABASE_USERNAME=admin
+      - DATABASE_PASSWORD=admin
+    depends_on:
+      - java_db
+
+  java_db:
     image: 'postgres:16'
     container_name: postgres
     restart: unless-stopped
